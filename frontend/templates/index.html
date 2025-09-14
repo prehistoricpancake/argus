@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argus AI Security Scanner</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Argus AI Security Scanner</h1>
+            <p class="subtitle">AI-powered security analysis for machine learning projects</p>
+        </header>
+
+        <main>
+            <section class="scan-section">
+                <h2>Scan Repository</h2>
+                
+                <form id="scanForm" class="scan-form">
+                    <div class="input-group">
+                        <label for="repositoryUrl">Repository URL</label>
+                        <input 
+                            type="url" 
+                            id="repositoryUrl" 
+                            name="repository_url"
+                            placeholder="https://github.com/username/repository"
+                            class="form-input"
+                        >
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="localPath">Or Local Path (optional)</label>
+                        <input 
+                            type="text" 
+                            id="localPath" 
+                            name="scan_local_path"
+                            placeholder="/path/to/local/repository"
+                            class="form-input"
+                        >
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="scanBtn">
+                            Scan Repository
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="demoBtn">
+                            Demo Scan
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="loadingSection" class="loading-section" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Scanning repository and analyzing security patterns...</p>
+                <div class="loading-steps">
+                    <div class="step" id="step1">📁 Scanning code patterns</div>
+                    <div class="step" id="step2">🔍 Vector similarity search</div>
+                    <div class="step" id="step3">📊 Generating security report</div>
+                </div>
+            </section>
+
+            <section id="resultsSection" class="results-section" style="display: none;">
+                <h2>Security Analysis Results</h2>
+                
+                <div class="results-overview">
+                    <div class="risk-score-card">
+                        <h3>Risk Assessment</h3>
+                        <div class="risk-score" id="riskScore">-</div>
+                        <div class="risk-level" id="riskLevel">-</div>
+                    </div>
+                    
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <span class="stat-number" id="filesScanned">-</span>
+                            <span class="stat-label">Files Scanned</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="patternsFound">-</span>
+                            <span class="stat-label">Patterns Found</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="vulnerabilities">-</span>
+                            <span class="stat-label">Similar Vulnerabilities</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-details">
+                    <div class="results-tab-nav">
+                        <button class="tab-btn active" data-tab="overview">Overview</button>
+                        <button class="tab-btn" data-tab="frameworks">Frameworks</button>
+                        <button class="tab-btn" data-tab="patterns">Code Patterns</button>
+                        <button class="tab-btn" data-tab="vulnerabilities">Similar Vulnerabilities</button>
+                        <button class="tab-btn" data-tab="recommendations">Recommendations</button>
+                    </div>
+
+                    <div id="overview" class="tab-content active">
+                        <h3>Executive Summary</h3>
+                        <div id="executiveSummary"></div>
+                    </div>
+
+                    <div id="frameworks" class="tab-content">
+                        <h3>Detected Frameworks</h3>
+                        <div id="frameworksList"></div>
+                    </div>
+
+                    <div id="patterns" class="tab-content">
+                        <h3>Security Patterns</h3>
+                        <div id="patternsList"></div>
+                    </div>
+
+                    <div id="vulnerabilities" class="tab-content">
+                        <h3>Similar Vulnerabilities</h3>
+                        <div id="vulnerabilitiesList"></div>
+                    </div>
+
+                    <div id="recommendations" class="tab-content">
+                        <h3>Security Recommendations</h3>
+                        <div id="recommendationsList"></div>
+                    </div>
+                </div>
+
+                <div class="export-section">
+                    <button class="btn btn-outline" id="exportBtn">Export Report</button>
+                    <button class="btn btn-outline" id="viewDetailedBtn">View Detailed Report</button>
+                </div>
+            </section>
+
+            <section id="errorSection" class="error-section" style="display: none;">
+                <h2>Scan Failed</h2>
+                <div class="error-message" id="errorMessage"></div>
+                <button class="btn btn-secondary" onclick="location.reload()">Try Again</button>
+            </section>
+        </main>
+
+        <footer>
+            <p>Powered by TiDB Vector Search | Argus AI Security Scanner v1.0</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
