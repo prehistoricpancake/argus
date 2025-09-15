@@ -4,11 +4,6 @@
 
 Argus intelligently scans AI/ML repositories for security vulnerabilities using a multi-agent system that leverages vector similarity search against comprehensive vulnerability databases.
 
-## 🚀 Live Demo
-
-- **Web Interface**: Install and run locally - `cd frontend && python3 app.py`
-- **CLI Tool**: Install and run locally (instructions below)
-
 ## 🏗️ System Architecture
 
 ```
