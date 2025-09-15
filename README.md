@@ -6,7 +6,7 @@ Argus intelligently scans AI/ML repositories for security vulnerabilities using 
 
 ## 🚀 Live Demo
 
-- **Web Interface**: [https://prehistoricpancake.github.io/argus](https://prehistoricpancake.github.io/argus)
+- **Web Interface**: available by installing and running locally - cd to frontend and run python app.py
 - **CLI Tool**: Install and run locally (instructions below)
 
 ## 🏗️ System Architecture

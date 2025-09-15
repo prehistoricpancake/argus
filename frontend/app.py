@@ -408,11 +408,11 @@ async def clone_repository(repo_url: str) -> str:
         shutil.rmtree(temp_base, ignore_errors=True)
         raise HTTPException(status_code=400, detail=f"Clone failed: {str(e)}")
 
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
-if __name__ == '__main__':
-    import os
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+# if __name__ == '__main__':
+#     import os
+#     port = int(os.environ.get('PORT', 5000))
+#     # app.run(host='0.0.0.0', port=port, debug=False)
