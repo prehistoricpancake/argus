@@ -30,26 +30,38 @@
                     </div>
                     
                     <div class="input-group">
-                        <label for="localPath">Or Local Path (optional)</label>
+                        <!-- <label for="localPath">Or Local Path (optional)</label>
                         <input 
                             type="text" 
                             id="localPath" 
                             name="scan_local_path"
                             placeholder="/path/to/local/repository"
                             class="form-input"
-                        >
+                        > -->
                     </div>
                     
                     <div class="button-group">
                         <button type="submit" class="btn btn-primary" id="scanBtn">
                             Scan Repository
                         </button>
-                        <button type="button" class="btn btn-secondary" id="demoBtn">
+                        <!-- <button type="button" class="btn btn-secondary" id="demoBtn">
                             Demo Scan
-                        </button>
+                        </button> -->
                     </div>
                 </form>
             </section>
+
+            <!-- Debug Section for Vector Store Testing
+            <section class="debug-section" style="margin-top: 40px; padding: 30px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; backdrop-filter: blur(10px);">
+                <h3 style="margin-bottom: 20px; color: var(--text-secondary); font-size: 1.1rem;">Vector Store Debug</h3>
+                <div class="button-group">
+                    <button type="button" id="checkVectorBtn" class="btn btn-secondary">Check Vector Store</button>
+                    <button type="button" id="populateVectorBtn" class="btn btn-secondary">Populate Vector Store</button>
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary); opacity: 0.8;">
+                    Use these tools to check if your vulnerability database is loaded and populate it if needed.
+                </p>
+            </section> -->
 
             <section id="loadingSection" class="loading-section" style="display: none;">
                 <div class="loading-spinner"></div>

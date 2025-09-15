@@ -1,176 +1,3 @@
-# from fastapi import FastAPI, Request, Form, HTTPException
-# from fastapi.responses import HTMLResponse, JSONResponse
-# from fastapi.staticfiles import StaticFiles
-# from fastapi.templating import Jinja2Templates
-# import sys
-# import os
-# import subprocess
-# import tempfile
-# import shutil
-# from pathlib import Path
-
-# # Add parent directory to path for imports
-# sys.path.append('..')
-# from agents.scanner import RepositoryScanner
-# from agents.analyzer import VulnerabilityAnalyzer
-# from agents.reporter import ReportGenerator
-
-# app = FastAPI(title="Argus AI Security Scanner", version="1.0.0")
-
-# # Mount static files and templates
-# app.mount("/static", StaticFiles(directory="static"), name="static")
-# templates = Jinja2Templates(directory="templates")
-
-# # Initialize agents (will be loaded once at startup)
-# scanner = None
-# analyzer = None
-# reporter = None
-
-# @app.on_event("startup")
-# async def startup_event():
-#     """Initialize agents on startup"""
-#     global scanner, analyzer, reporter
-#     try:
-#         print("Initializing Argus agents...")
-#         scanner = RepositoryScanner()
-#         analyzer = VulnerabilityAnalyzer()
-#         reporter = ReportGenerator()
-#         print("Agents initialized successfully")
-#     except Exception as e:
-#         print(f"Error initializing agents: {e}")
-
-# @app.get("/", response_class=HTMLResponse)
-# async def dashboard(request: Request):
-#     """Main dashboard page"""
-#     return templates.TemplateResponse("index.html", {"request": request})
-
-# @app.get("/health")
-# async def health_check():
-#     """Health check endpoint"""
-#     return {"status": "healthy", "agents_loaded": scanner is not None}
-
-# @app.post("/api/scan")
-# async def scan_repository(
-#     repository_url: str = Form(...),
-#     scan_local_path: str = Form(default="")
-# ):
-#     """Scan a repository and return security analysis"""
-    
-#     if not scanner or not analyzer or not reporter:
-#         raise HTTPException(status_code=500, detail="Agents not initialized")
-    
-#     try:
-#         # Determine scan target
-#         if scan_local_path:
-#             # Scan local directory
-#             repo_path = scan_local_path
-#             if not os.path.exists(repo_path):
-#                 raise HTTPException(status_code=400, detail=f"Local path does not exist: {repo_path}")
-#         else:
-#             # Clone repository to temporary directory
-#             repo_path = await clone_repository(repository_url)
-        
-#         # Run multi-agent analysis
-#         print(f"Scanning repository: {repo_path}")
-        
-#         # Step 1: Repository scanning
-#         scan_results = scanner.scan_repository(repo_path)
-#         if 'error' in scan_results:
-#             raise HTTPException(status_code=400, detail=scan_results['error'])
-        
-#         # Step 2: Vulnerability analysis using vector search
-#         vulnerability_matches = analyzer.analyze_patterns(scan_results)
-        
-#         # Step 3: Report generation
-#         report = reporter.generate_report(scan_results, vulnerability_matches)
-        
-#         # Cleanup temporary directory if it was a cloned repo
-#         if not scan_local_path and repo_path.startswith('/tmp'):
-#             shutil.rmtree(repo_path, ignore_errors=True)
-        
-#         return {
-#             "status": "success",
-#             "scan_results": scan_results,
-#             "vulnerability_matches": vulnerability_matches[:10],  # Limit for response size
-#             "report": report
-#         }
-        
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Scan failed: {str(e)}")
-
-# @app.get("/api/scan/{scan_id}")
-# async def get_scan_results(scan_id: str):
-#     """Get results of a previous scan (placeholder for future implementation)"""
-#     # This would typically query a database
-#     return {"message": "Scan results retrieval not implemented yet"}
-
-# @app.get("/report", response_class=HTMLResponse)
-# async def view_report(request: Request):
-#     """View detailed report page"""
-#     return templates.TemplateResponse("report.html", {"request": request})
-
-# async def clone_repository(repo_url: str) -> str:
-#     """Clone a Git repository to a temporary directory"""
-    
-#     # Basic URL validation
-#     if not repo_url.startswith(('https://github.com', 'https://gitlab.com')):
-#         raise HTTPException(status_code=400, detail="Only GitHub and GitLab repositories are supported")
-    
-#     # Create temporary directory
-#     temp_dir = tempfile.mkdtemp(prefix="argus_scan_")
-    
-#     try:
-#         # Clone repository (shallow clone for speed)
-#         result = subprocess.run([
-#             'git', 'clone', '--depth', '1', repo_url, temp_dir
-#         ], capture_output=True, text=True, timeout=60)
-        
-#         if result.returncode != 0:
-#             shutil.rmtree(temp_dir, ignore_errors=True)
-#             raise HTTPException(status_code=400, detail=f"Failed to clone repository: {result.stderr}")
-        
-#         return temp_dir
-        
-#     except subprocess.TimeoutExpired:
-#         shutil.rmtree(temp_dir, ignore_errors=True)
-#         raise HTTPException(status_code=400, detail="Repository clone timed out")
-#     except Exception as e:
-#         shutil.rmtree(temp_dir, ignore_errors=True)
-#         raise HTTPException(status_code=400, detail=f"Clone failed: {str(e)}")
-
-# # Demo endpoint for testing without cloning
-# @app.post("/api/demo-scan")
-# async def demo_scan():
-#     """Demo scan using the argus project itself"""
-    
-#     if not scanner or not analyzer or not reporter:
-#         raise HTTPException(status_code=500, detail="Agents not initialized")
-    
-#     try:
-#         # Scan the parent directory (argus project)
-#         repo_path = ".."
-        
-#         scan_results = scanner.scan_repository(repo_path)
-#         vulnerability_matches = analyzer.analyze_patterns(scan_results)
-#         report = reporter.generate_report(scan_results, vulnerability_matches)
-        
-#         return {
-#             "status": "success",
-#             "demo": True,
-#             "scan_results": scan_results,
-#             "vulnerability_matches": vulnerability_matches[:5],
-#             "report": report
-#         }
-        
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Demo scan failed: {str(e)}")
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
-
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -320,6 +147,91 @@ async def demo_scan():
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Demo scan failed: {str(e)}")
+@app.get("/api/check-vector-store")
+async def check_vector_store():
+    """Check if the vector store has data"""
+    
+    try:
+        from data.vector_store import ArgusVectorStore
+        
+        # Test vector store connection
+        vector_store = ArgusVectorStore()
+        
+        # Try a simple search to see if there's any data
+        test_results = vector_store.search_similar_vulnerabilities("test", k=1)
+        
+        result = {
+            "status": "success",
+            "vector_store_initialized": True,
+            "has_data": len(test_results) > 0,
+            "sample_results_count": len(test_results)
+        }
+        
+        if test_results:
+            first_result = test_results[0]
+            result["sample_result"] = {
+                "distance": getattr(first_result, 'distance', 'unknown'),
+                "document_preview": getattr(first_result, 'document', '')[:100],
+                "metadata_source": getattr(first_result, 'metadata', {}).get('source', 'unknown')
+            }
+        
+        return result
+        
+    except Exception as e:
+        import traceback
+        return {
+            "status": "error",
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }
+
+
+# Add this endpoint to populate your vector store if it's empty
+@app.post("/api/populate-vector-store")
+async def populate_vector_store():
+    """Populate the vector store with data from your local files"""
+    
+    try:
+        # Import from the data directory
+        import sys
+        sys.path.append('..')
+        from data.processor import DataProcessor
+        
+        processor = DataProcessor()
+        
+        # Use absolute paths to find your data files
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(current_dir)
+        
+        excel_path = os.path.join(project_root, "ai_risk_report.xlsx")
+        avid_path = os.path.join(project_root, "avid-db")
+        
+        print(f"Looking for files:")
+        print(f"  Excel: {excel_path} (exists: {os.path.exists(excel_path)})")
+        print(f"  AVID: {avid_path} (exists: {os.path.exists(avid_path)})")
+        
+        # Load data into vector store
+        total_docs = processor.load_knowledge_base(
+            excel_path=excel_path if os.path.exists(excel_path) else None,
+            avid_repo_path=avid_path if os.path.exists(avid_path) else None
+        )
+        
+        return {
+            "status": "success",
+            "documents_loaded": total_docs,
+            "excel_path": excel_path,
+            "avid_path": avid_path,
+            "excel_exists": os.path.exists(excel_path),
+            "avid_exists": os.path.exists(avid_path)
+        }
+        
+    except Exception as e:
+        import traceback
+        return {
+            "status": "error", 
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }
 
 @app.post("/api/export-pdf")
 async def export_pdf(scan_data: dict):
@@ -459,27 +371,48 @@ async def clone_repository(repo_url: str) -> str:
         raise HTTPException(status_code=400, detail="Only GitHub and GitLab repositories are supported")
     
     # Create temporary directory
-    temp_dir = tempfile.mkdtemp(prefix="argus_scan_")
+    temp_base = tempfile.mkdtemp(prefix="argus_scan_")
+    
+    # Extract repo name from URL for the clone directory
+    repo_name = repo_url.split('/')[-1].replace('.git', '')
+    clone_path = os.path.join(temp_base, repo_name)
     
     try:
+        print(f"Cloning {repo_url} to {clone_path}")
+        
         # Clone repository (shallow clone for speed)
         result = subprocess.run([
-            'git', 'clone', '--depth', '1', repo_url, temp_dir
-        ], capture_output=True, text=True, timeout=60)
+            'git', 'clone', '--depth', '1', repo_url, clone_path
+        ], capture_output=True, text=True, timeout=120)  # Increased timeout
         
         if result.returncode != 0:
-            shutil.rmtree(temp_dir, ignore_errors=True)
+            print(f"Git clone failed: {result.stderr}")
+            shutil.rmtree(temp_base, ignore_errors=True)
             raise HTTPException(status_code=400, detail=f"Failed to clone repository: {result.stderr}")
         
-        return temp_dir
+        # Verify the clone worked
+        if not os.path.exists(clone_path) or not os.listdir(clone_path):
+            shutil.rmtree(temp_base, ignore_errors=True)
+            raise HTTPException(status_code=400, detail="Repository appears to be empty or clone failed")
+        
+        print(f"Successfully cloned to {clone_path}")
+        print(f"Directory contents: {os.listdir(clone_path)[:10]}")  # Show first 10 files
+        
+        return clone_path
         
     except subprocess.TimeoutExpired:
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        shutil.rmtree(temp_base, ignore_errors=True)
         raise HTTPException(status_code=400, detail="Repository clone timed out")
     except Exception as e:
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        print(f"Clone exception: {e}")
+        shutil.rmtree(temp_base, ignore_errors=True)
         raise HTTPException(status_code=400, detail=f"Clone failed: {str(e)}")
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+if __name__ == '__main__':
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

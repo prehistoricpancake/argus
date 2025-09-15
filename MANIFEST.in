@@ -1,0 +1,15 @@
+include README.md
+include LICENSE
+include requirements.txt
+include .env.example
+recursive-include argus_cli *.py
+recursive-include agents *.py
+recursive-include data *.py
+recursive-include frontend *.py *.html *.css *.js
+exclude ai_risk_report.xlsx
+exclude argus_report_*.json
+exclude argus_report_*.txt
+exclude argus_report_*.pdf
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.egg-info
