@@ -6,7 +6,7 @@ Argus intelligently scans AI/ML repositories for security vulnerabilities using 
 
 ## 🚀 Live Demo
 
-- **Web Interface**: available by installing and running locally - cd to frontend and run python app.py
+- **Web Interface**: Install and run locally - `cd frontend && python3 app.py`
 - **CLI Tool**: Install and run locally (instructions below)
 
 ## 🏗️ System Architecture
@@ -194,20 +194,22 @@ Report saved: argus_report_transformers_20250915_141712.json
 
 ## 🌐 Web Interface
 
-### Local Development
+### Running the Web Interface
 ```bash
-# Install frontend dependencies
-pip install -e ".[frontend]"
-
-# Run web server
+# Navigate to frontend directory
 cd frontend
-python app.py
 
-# Visit http://localhost:5000
+# Run the Flask web server
+python3 app.py
+
+# Visit http://localhost:5000 in your browser
 ```
 
-### Deployed Version
-Visit the live web interface: [https://prehistoricpancake.github.io/argus](https://prehistoricpancake.github.io/argus)
+The web interface provides:
+- **Repository URL input**: Scan any public GitHub repository
+- **Real-time scanning**: Watch the scan progress live
+- **Interactive reports**: View detailed vulnerability analysis
+- **Download reports**: Export results as JSON, PDF, or TXT
 
 ## 🔧 Configuration
 
